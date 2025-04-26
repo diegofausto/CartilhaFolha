@@ -2,13 +2,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#001f3f">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Meu RH - App</title>
-    <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartilha da Folha de Pagamento</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -23,610 +18,549 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
             background-color: var(--light-gray);
             color: var(--navy-blue);
-            overflow-x: hidden;
-            height: 100vh;
-            height: -webkit-fill-available;
+            scroll-behavior: smooth;
         }
         
-        #app {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            height: -webkit-fill-available;
-        }
-        
-        .app-header {
+        header {
             background-color: var(--navy-blue);
             color: var(--white);
-            padding: 0.8rem 1rem;
-            position: sticky;
+            padding: 1rem 2rem;
+            position: fixed;
+            width: 100%;
             top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .app-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .logo {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 10px;
         }
         
-        .app-title i {
-            font-size: 1.2rem;
+        .logo i {
+            font-size: 1.5rem;
+            color: var(--light-blue);
         }
         
-        .app-content {
-            flex: 1;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 60px;
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            margin-top: 1rem;
         }
         
-        .section {
-            padding: 1.5rem 1rem;
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
         }
         
-        .section-title {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
+        nav a:hover {
+            color: var(--light-blue);
+        }
+        
+        main {
+            margin-top: 80px;
+        }
+        
+        section {
+            min-height: 100vh;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        section:nth-child(odd) {
+            background-color: var(--white);
+        }
+        
+        section:nth-child(even) {
+            background-color: var(--light-gray);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
             color: var(--navy-blue);
             position: relative;
             padding-bottom: 0.5rem;
         }
         
-        .section-title::after {
+        h1::after {
             content: '';
             position: absolute;
             bottom: 0;
             left: 0;
-            width: 50px;
-            height: 3px;
+            width: 100px;
+            height: 4px;
             background-color: var(--light-blue);
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin: 1.5rem 0;
+            color: var(--blue);
+        }
+        
+        h3 {
+            font-size: 1.4rem;
+            margin: 1rem 0;
+            color: var(--navy-blue);
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
         }
         
         .card {
             background-color: var(--white);
-            border-radius: 10px;
-            padding: 1.2rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
         
-        .card-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card i {
+            font-size: 2rem;
             color: var(--blue);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .card-title i {
-            font-size: 1.2rem;
-        }
-        
-        .card-content {
-            font-size: 0.9rem;
-            line-height: 1.5;
             margin-bottom: 1rem;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--blue);
+            color: var(--white);
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(0, 116, 217, 0.05);
+        }
+        
+        tr:hover {
+            background-color: rgba(0, 116, 217, 0.1);
         }
         
         .btn {
             display: inline-block;
             background-color: var(--blue);
             color: var(--white);
-            padding: 0.6rem 1rem;
-            border-radius: 6px;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
             text-decoration: none;
-            font-size: 0.9rem;
-            text-align: center;
-            border: none;
-            width: 100%;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
         }
         
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: var(--white);
-            display: flex;
-            justify-content: space-around;
-            padding: 0.5rem 0;
-            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
-        
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-decoration: none;
-            color: var(--navy-blue);
-            font-size: 0.7rem;
-            padding: 0.3rem;
-        }
-        
-        .nav-item i {
-            font-size: 1.2rem;
-            margin-bottom: 0.2rem;
-        }
-        
-        .nav-item.active {
-            color: var(--blue);
-        }
-        
-        .menu-list {
-            list-style: none;
-        }
-        
-        .menu-item {
-            padding: 1rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .menu-item i {
-            width: 24px;
-            text-align: center;
-            color: var(--blue);
-        }
-        
-        .badge {
-            background-color: var(--blue);
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-left: auto;
-        }
-        
-        /* Off-canvas menu */
-        .off-canvas {
-            position: fixed;
-            top: 0;
-            left: -100%;
-            width: 80%;
-            max-width: 300px;
-            height: 100%;
-            background-color: var(--white);
-            z-index: 200;
-            transition: transform 0.3s ease;
-            overflow-y: auto;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .off-canvas.open {
-            transform: translateX(100%);
-        }
-        
-        .off-canvas-header {
+        .btn:hover {
             background-color: var(--navy-blue);
-            color: white;
-            padding: 1.5rem 1rem;
+        }
+        
+        .highlight {
+            background-color: rgba(127, 219, 255, 0.3);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        footer {
+            background-color: var(--navy-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .footer-links {
             display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        
-        .off-canvas-header img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        
-        .off-canvas-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 150;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        .off-canvas-overlay.open {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        /* Loading indicator */
-        .loader {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(255, 255, 255, 0.8);
-            z-index: 300;
             justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            gap: 2rem;
+            margin: 1rem 0;
         }
         
-        .loader.active {
-            display: flex;
+        .footer-links a {
+            color: var(--light-blue);
+            text-decoration: none;
         }
         
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--light-blue);
-            border-top: 4px solid var(--blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1rem;
+        .footer-links a:hover {
+            text-decoration: underline;
         }
         
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Responsive adjustments */
-        @media (min-width: 768px) {
-            .app-header {
-                padding: 0.8rem 2rem;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
             }
             
-            .section {
-                padding: 2rem;
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            section {
+                padding: 3rem 1.5rem;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <header class="app-header">
-            <button id="menu-toggle" style="background: none; border: none; color: white; font-size: 1.2rem;">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="app-title">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <span>Meu RH</span>
-            </div>
-            <div style="width: 24px;"></div> <!-- Spacer para alinhamento -->
-        </header>
-        
-        <div class="off-canvas-overlay" id="off-canvas-overlay"></div>
-        <div class="off-canvas" id="off-canvas-menu">
-            <div class="off-canvas-header">
-                <img src="https://ui-avatars.com/api/?name=Usuário&background=0074D9&color=fff" alt="User">
-                <div>
-                    <div style="font-weight: 600;">Usuário</div>
-                    <small>empregado@empresa.com</small>
+    <header>
+        <div class="logo">
+            <i class="fas fa-file-invoice-dollar"></i>
+            <h1>Cartilha da Folha de Pagamento</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#home">Início</a></li>
+                <li><a href="#meu-rh">Meu RH</a></li>
+                <li><a href="#ponto">Ponto Eletrônico</a></li>
+                <li><a href="#ferias">Férias</a></li>
+                <li><a href="#decimo-terceiro">13º Salário</a></li>
+                <li><a href="#previdencia">Previdência</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <section id="home">
+            <h1>Bem-vindo ao Portal da Folha de Pagamento</h1>
+            <p>Este portal foi desenvolvido para descomplicar o entendimento sobre todos os processos relacionados à folha de pagamento, benefícios e direitos trabalhistas.</p>
+            
+            <div class="card-container">
+                <div class="card">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>MEU RH APP</h3>
+                    <p>Nesse portal poderá consultar contracheque, férias e informe de rendimentos.</p>
+                    <a href="#" class="btn">Acessar App</a>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-desktop"></i>
+                    <h3>MEU RH WEB</h3>
+                    <p>Nesse portal o empregado poderá verificar seus registros de ponto, acompanhar o tratamento de ponto feito pelo gestor, acompanhar o banco de horas, e validar seu espelho de ponto.</p>
+                    <a href="#" class="btn">Acessar Web</a>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>GESTOR</h3>
+                    <p>Nesse portal o gestor poderá verificar os registros de ponto da sua equipe, realizar o tratamento de ponto necessário, como abono, troca de horário, faltas, atrasos, entre outras coisas.</p>
+                    <a href="#" class="btn">Acessar Gestor</a>
                 </div>
             </div>
-            <ul class="menu-list">
-                <li class="menu-item">
+        </section>
+        
+        <section id="meu-rh">
+            <h1>Aplicativo Meu RH</h1>
+            <p>Utilizado para empoderar empregados e gestores quanto às movimentações e informações trabalhistas de Férias, Contracheque, Imposto de Renda e Dados Contratuais.</p>
+            
+            <div class="card-container">
+                <div class="card">
                     <i class="fas fa-user"></i>
-                    <span>Meu Perfil</span>
+                    <h3>Para Empregados</h3>
+                    <ul>
+                        <li>Consultar e baixar contracheque individual</li>
+                        <li>Solicitar e consultar férias</li>
+                        <li>Acessar o informe de rendimentos</li>
+                        <li>Acompanhar os dados contratuais e pessoais</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <h3>Para Gestores</h3>
+                    <ul>
+                        <li>Acompanhar e aprovar solicitações de férias</li>
+                        <li>Consultar contracheque da equipe para suporte</li>
+                        <li>Acompanhar a lista de subordinados</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>Acesso ao Sistema</h2>
+            <ul>
+                <li><strong>Usuário:</strong> CPF</li>
+                <li><strong>Senha inicial:</strong> CPF (Será necessário realizar a troca no primeiro login)</li>
+                <li><strong>Login por QR Code:</strong> Após a leitura do QR Code, o login poderá ser feito normalmente</li>
+            </ul>
+            <p class="highlight">Em caso de perda/esquecimento de senha, o empregado deve clicar em "Esqueci Senha" e seguir as orientações do aplicativo.</p>
+        </section>
+        
+        <section id="ponto">
+            <h1>Sistema de Ponto Eletrônico</h1>
+            <p>A gestão do ponto é essencial para garantir a conformidade com a legislação trabalhista e a eficiência operacional da empresa.</p>
+            
+            <h2>Responsabilidades</h2>
+            <div class="card-container">
+                <div class="card">
+                    <i class="fas fa-user-clock"></i>
+                    <h3>Empregados</h3>
+                    <ul>
+                        <li>Registrar o ponto</li>
+                        <li>Acompanhar e aprovar o ponto através do aplicativo MY AHGORA</li>
+                        <li>Incluir esquecimentos de batida</li>
+                        <li>Solicitar abonos de ausência</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-clipboard-check"></i>
+                    <h3>Gestores</h3>
+                    <ul>
+                        <li>Acompanhar os registros de pontos dos empregados</li>
+                        <li>Tratar o ponto com troca de horários</li>
+                        <li>Abono/justificativa de ausências</li>
+                        <li>Conferência de eventos do ponto para a folha</li>
+                        <li>Aprovar o espelho do ponto</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-hands-helping"></i>
+                    <h3>RH</h3>
+                    <ul>
+                        <li>Acompanhar a atuação dos empregados e gestores</li>
+                        <li>Orientar e treinar</li>
+                        <li>Gerar indicadores de ponto</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>Primeiros Passos</h2>
+            <div class="card-container">
+                <div class="card">
+                    <i class="fas fa-user"></i>
+                    <h3>Para Empregados</h3>
+                    <ul>
+                        <li><strong>Acesse:</strong> MY AHGORA WEB</li>
+                        <li><strong>Usuário:</strong> Matrícula</li>
+                        <li><strong>Senha inicial:</strong> 12345 (trocar no primeiro login)</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Para Gestores</h3>
+                    <ul>
+                        <li><strong>Acesse:</strong> AHGORA GESTOR</li>
+                        <li><strong>Usuário:</strong> e-mail corporativo</li>
+                        <li><strong>Senha:</strong> Clique em "Esqueci a senha"</li>
+                        <li>Receberá um e-mail com link para criação da senha</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <h2>Informações Importantes</h2>
+            <ul>
+                <li><strong>Período de apuração:</strong> De 06 da competência anterior até o dia 05 da competência atual</li>
+                <li><strong>Tolerância:</strong> 5 minutos</li>
+                <li><strong>Banco de horas semestral:</strong> Para empregados do turno ADM</li>
+            </ul>
+        </section>
+        
+        <section id="ferias">
+            <h1>Férias</h1>
+            <p>Art. 134. As férias serão concedidas por ato do empregador, em um só período, nos 12 (doze) meses subsequentes à data em que o empregado tiver adquirido o direito.</p>
+            <p class="highlight">Solicite férias no app Meu RH.</p>
+            
+            <h2>Pontos Importantes</h2>
+            <ul>
+                <li><strong>Prazos:</strong> As férias deverão ser solicitadas pelo empregado, com aprovação do gestor, em até <strong>45 dias</strong> de antecedência do início do gozo.</li>
+                <li><strong>Requisitos para início:</strong> Não deverá ser em dias de descanso/folga/DSR, compensação, feriados e domingos. É vedado o início das férias no período de dois dias que antecede DSR e Feriados.</li>
+                <li><strong>Pagamentos:</strong>
+                    <ul>
+                        <li><strong>Dia 10:</strong> Referente as férias iniciadas entre os dias 16 e 30 do mês atual</li>
+                        <li><strong>Dia 25:</strong> Referente as férias iniciadas entre os dias 01 e 15 do mês seguinte</li>
+                    </ul>
                 </li>
-                <li class="menu-item">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span>Contracheque</span>
+                <li><strong>Abono:</strong> É possível vender 10 dias de férias, se houver saldo de férias</li>
+                <li><strong>Adiantamento de 13º Salário:</strong> Solicitações devem ser feitas entre Fevereiro e Novembro</li>
+            </ul>
+            
+            <h2>Documentos Obrigatórios</h2>
+            <ul>
+                <li>Aviso de Férias</li>
+                <li>Recibo de Férias</li>
+            </ul>
+            <p>Atualmente a Canpack utiliza assinatura eletrônica, portanto é necessário o empregado manter e-mail atualizado nos sistemas Workday e Meu RH.</p>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Férias Solicitadas</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>15 dias</td>
+                            <td>Aguardando aprovação do Gestor</td>
+                        </tr>
+                        <tr>
+                            <td>Início: 10/02/2012</td>
+                            <td>Final: 24/02/2012</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="decimo-terceiro">
+            <h1>13º Salário</h1>
+            <p>O décimo terceiro salário, gratificação natalina ou subsídio de Natal é um pagamento ao empregado. O seu valor, embora variável, é geralmente aproximado ao de um salário mensal, podendo ser paga em duas prestações.</p>
+            
+            <h2>Pontos Importantes</h2>
+            <ul>
+                <li><strong>Data de Pagamento:</strong>
+                    <ul>
+                        <li><strong>1ª Parcela:</strong> Até 30 de Novembro (podendo ser solicitado nas férias entre Fevereiro e Novembro)</li>
+                        <li><strong>2ª Parcela:</strong> Até 20 de Dezembro</li>
+                    </ul>
                 </li>
-                <li class="menu-item">
-                    <i class="fas fa-umbrella-beach"></i>
-                    <span>Férias</span>
-                    <span class="badge">2</span>
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Banco de Horas</span>
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Ponto Eletrônico</span>
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-info-circle"></i>
-                    <span>Informe de Rendimentos</span>
-                </li>
-                <li class="menu-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
+                <li><strong>Valores:</strong>
+                    <ul>
+                        <li><strong>1ª Parcela:</strong> 50% do Salário Base</li>
+                        <li><strong>2ª Parcela:</strong> 50% do Salário Base + Média de Variáveis, com Deduções do IR e INSS</li>
+                    </ul>
                 </li>
             </ul>
-        </div>
+        </section>
         
-        <main class="app-content">
-            <section class="section" id="home">
-                <h2 class="section-title">Bem-vindo, Usuário</h2>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <i class="fas fa-bell"></i>
-                        <span>Notificações</span>
-                    </div>
-                    <div class="card-content">
-                        Você tem 1 nova mensagem e 2 solicitações pendentes.
-                    </div>
-                    <button class="btn">Ver Todas</button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        <span>Último Contracheque</span>
-                    </div>
-                    <div class="card-content">
-                        Seu contracheque de Janeiro/2024 está disponível para visualização.
-                    </div>
-                    <button class="btn">Visualizar</button>
-                </div>
-                
-                <div class="card">
-                    <div class="card-title">
-                        <i class="fas fa-umbrella-beach"></i>
-                        <span>Minhas Férias</span>
-                    </div>
-                    <div class="card-content">
-                        Você tem 15 dias de férias disponíveis para agendamento.
-                    </div>
-                    <button class="btn">Solicitar Férias</button>
-                </div>
-            </section>
+        <section id="previdencia">
+            <h1>Previdência Privada</h1>
+            <p>A CANPACK tem uma preocupação constante com o futuro e com o bem-estar de seus profissionais. Por esse motivo disponibiliza a todos seus colaboradores o Plano de Previdência Privada CANPACKPREV.</p>
             
-            <section class="section" id="contracheque" style="display: none;">
-                <h2 class="section-title">Contracheque</h2>
-                <!-- Conteúdo do contracheque -->
-            </section>
+            <h2>Pontos Importantes</h2>
+            <ul>
+                <li><strong>Quem tem direito:</strong> Empregados CLT</li>
+                <li><strong>Adesão:</strong> Quando desejar, a partir da admissão, através do formulário eletrônico ou solicitando formulário ao RH Local</li>
+                <li><strong>Alteração:</strong> Semestralmente, em Janeiro e Julho</li>
+                <li><strong>Suspensão/Cancelamento:</strong> Empregado pode suspender temporariamente as contribuições</li>
+                <li><strong>Resgate:</strong> Empregado pode solicitar o resgate quando quiser</li>
+            </ul>
             
-            <section class="section" id="ferias" style="display: none;">
-                <h2 class="section-title">Férias</h2>
-                <!-- Conteúdo de férias -->
-            </section>
-            
-            <section class="section" id="ponto" style="display: none;">
-                <h2 class="section-title">Ponto Eletrônico</h2>
-                <!-- Conteúdo de ponto eletrônico -->
-            </section>
-            
-            <section class="section" id="ajuda" style="display: none;">
-                <h2 class="section-title">Ajuda</h2>
-                <!-- Conteúdo de ajuda -->
-            </section>
-        </main>
-        
-        <nav class="bottom-nav">
-            <a href="#home" class="nav-item active">
-                <i class="fas fa-home"></i>
-                <span>Início</span>
-            </a>
-            <a href="#contracheque" class="nav-item">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <span>Contracheque</span>
-            </a>
-            <a href="#ferias" class="nav-item">
-                <i class="fas fa-umbrella-beach"></i>
-                <span>Férias</span>
-            </a>
-            <a href="#ponto" class="nav-item">
-                <i class="fas fa-clock"></i>
-                <span>Ponto</span>
-            </a>
-            <a href="#ajuda" class="nav-item">
-                <i class="fas fa-question-circle"></i>
-                <span>Ajuda</span>
-            </a>
-        </nav>
-    </div>
+            <h2>Resgate</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tempo de Plano (meses completos)</th>
+                            <th>% do Saldo das Contribuições</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Até 35 meses</td>
+                            <td>0%</td>
+                        </tr>
+                        <tr>
+                            <td>De 36 a 59 meses</td>
+                            <td>50%</td>
+                        </tr>
+                        <tr>
+                            <td>Acima de 60 meses</td>
+                            <td>100%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
     
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-        <div>Carregando...</div>
-    </div>
+    <footer>
+        <div class="footer-links">
+            <a href="#"><i class="fas fa-question-circle"></i> Dúvidas Frequentes</a>
+            <a href="#"><i class="fas fa-phone"></i> Contato RH</a>
+            <a href="#"><i class="fas fa-file-pdf"></i> Documentos</a>
+        </div>
+        <p>© 2023 Cartilha da Folha de Pagamento. Todos os direitos reservados.</p>
+    </footer>
     
     <script>
-        // Menu off-canvas
-        const menuToggle = document.getElementById('menu-toggle');
-        const offCanvasMenu = document.getElementById('off-canvas-menu');
-        const offCanvasOverlay = document.getElementById('off-canvas-overlay');
-        
-        menuToggle.addEventListener('click', () => {
-            offCanvasMenu.classList.add('open');
-            offCanvasOverlay.classList.add('open');
-        });
-        
-        offCanvasOverlay.addEventListener('click', () => {
-            offCanvasMenu.classList.remove('open');
-            offCanvasOverlay.classList.remove('open');
-        });
-        
-        // Navegação entre seções
-        const navItems = document.querySelectorAll('.nav-item');
-        const sections = document.querySelectorAll('.section');
-        
-        navItems.forEach(item => {
-            item.addEventListener('click', function(e) {
+        // Efeito de rolagem suave para os links do menu
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                // Remove a classe active de todos os itens
-                navItems.forEach(navItem => {
-                    navItem.classList.remove('active');
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
                 });
-                
-                // Adiciona a classe active ao item clicado
-                this.classList.add('active');
-                
-                // Oculta todas as seções
-                sections.forEach(section => {
-                    section.style.display = 'none';
-                });
-                
-                // Mostra a seção correspondente
-                const targetId = this.getAttribute('href').substring(1);
-                document.getElementById(targetId).style.display = 'block';
-                
-                // Simula carregamento
-                showLoader();
-                setTimeout(hideLoader, 800);
             });
         });
         
-        // Loader functions
-        function showLoader() {
-            document.getElementById('loader').classList.add('active');
-        }
+        // Animação dos cards ao aparecer na tela
+        const cards = document.querySelectorAll('.card');
         
-        function hideLoader() {
-            document.getElementById('loader').classList.remove('active');
-        }
-        
-        // Service Worker para PWA
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registrado com sucesso: ', registration.scope);
-                    })
-                    .catch(err => {
-                        console.log('Falha no registro do ServiceWorker: ', err);
-                    });
-            });
-        }
-        
-        // Detectar se está sendo executado como PWA
-        window.addEventListener('DOMContentLoaded', () => {
-            if (window.matchMedia('(display-mode: standalone)').matches || 
-                window.navigator.standalone === true) {
-                console.log('Executando como PWA');
-            }
-        });
-    </script>
-    
-    <!-- Manifest.json para PWA -->
-    <script>
-        const manifest = {
-            "name": "Meu RH",
-            "short_name": "MeuRH",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#001f3f",
-            "theme_color": "#001f3f",
-            "description": "Aplicativo de Folha de Pagamento e Benefícios",
-            "icons": [
-                {
-                    "src": "icons/icon-72x72.png",
-                    "sizes": "72x72",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-96x96.png",
-                    "sizes": "96x96",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-128x128.png",
-                    "sizes": "128x128",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-144x144.png",
-                    "sizes": "144x144",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-152x152.png",
-                    "sizes": "152x152",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-192x192.png",
-                    "sizes": "192x192",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-384x384.png",
-                    "sizes": "384x384",
-                    "type": "image/png"
-                },
-                {
-                    "src": "icons/icon-512x512.png",
-                    "sizes": "512x512",
-                    "type": "image/png"
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
-            ]
-        };
-        
-        // Criar o arquivo manifest.json dinamicamente
-        const blob = new Blob([JSON.stringify(manifest)], {type: 'application/json'});
-        const manifestURL = URL.createObjectURL(blob);
-        document.querySelector('link[rel="manifest"]').href = manifestURL;
-    </script>
-    
-    <!-- Service Worker para PWA -->
-    <script>
-        const swCode = `
-            const CACHE_NAME = 'meu-rh-v1';
-            const urlsToCache = [
-                '/',
-                '/index.html',
-                '/styles/main.css',
-                '/scripts/main.js',
-                '/images/logo.png'
-            ];
-            
-            self.addEventListener('install', event => {
-                event.waitUntil(
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            return cache.addAll(urlsToCache);
-                        })
-                );
             });
-            
-            self.addEventListener('fetch', event => {
-                event.respondWith(
-                    caches.match(event.request)
-                        .then(response => {
-                            if (response) {
-                                return response;
-                            }
-                            return fetch(event.request);
-                        }
-                );
-            });
-        `;
+        }, { threshold: 0.1 });
         
-        // Criar o arquivo sw.js dinamicamente
-        if ('serviceWorker' in navigator) {
-            const blob = new Blob([swCode], {type: 'application/javascript'});
-            const swURL = URL.createObjectURL(blob);
-            
-            // Registrar o service worker
-            navigator.serviceWorker.register(swURL)
-                .then(registration => {
-                    console.log('Service Worker registrado com escopo:', registration.scope);
-                })
-                .catch(err => {
-                    console.log('Falha ao registrar Service Worker:', err);
-                });
-        }
+        cards.forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
     </script>
 </body>
 </html>
